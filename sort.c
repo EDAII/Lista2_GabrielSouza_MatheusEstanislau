@@ -160,8 +160,10 @@ int main()
 
             insertionSortTarefa(tarefa, 5);
 
+            printf("\nTarefas ordenadas por Prioridade\n\n");
             for (int i = 0; i < 5; i++)
             {
+                printf("Tarefa: ");
                 puts(tarefa[i].nome);
                 printf("Prioridade: %d\n", tarefa[i].prioridade);
             }
