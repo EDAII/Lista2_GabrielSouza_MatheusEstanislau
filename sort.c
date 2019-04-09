@@ -1,13 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #define DIM 100
 #define DEZ 10
 #define MIL 1000
 #define DEZ_MIL 10000
 
+typedef struct
+{
+    int prioridade;
+    char nome[30];
+} Task;
+
+Task tarefa[5];
+
 void selectionSort(int vetor[], int tamVetor);
 void insertionSort(int vetor[]);
+void insertionSortTarefa(Task *tarefa, int n);
 void bubbleSort(int vetor[]);
 void shellSort(int vetor[]);
 void quick_sort(int *a, int inicio, int fim);
@@ -23,13 +33,14 @@ void pause(float delay1);
 
 int main()
 {
+
     int vetorDez[DEZ],
         vetorCem[DIM],
         vetorMil[MIL],
         vetorDezMil[DEZ_MIL];
-    //int tamVetor = sizeof(vetor) / sizeof(int);
     size_t inicio, fim;
     double tempo;
+    char lixo;
     int menuPri, menuOrdenacao, menuComparativo, menuTuto;
 
     //Menu Principal
@@ -138,6 +149,25 @@ int main()
 
         //Quer Saber Mais? "Matheus"
         case 3:
+            for (int i = 0; i < 5; i++)
+            {
+                printf("Tarefa: ");
+                setbuf(stdin, NULL);
+                fgets(tarefa[i].nome, 30, stdin);
+                printf("Prioridade (1 - 5): ");
+                scanf("%d", &tarefa[i].prioridade);
+            }
+
+            insertionSortTarefa(tarefa, 5);
+
+            for (int i = 0; i < 5; i++)
+            {
+                puts(tarefa[i].nome);
+                printf("Prioridade: %d\n", tarefa[i].prioridade);
+            }
+            printf("Tecle ENTER para continuar");
+            setbuf(stdin, NULL);
+            scanf("%c", &lixo);
 
             break;
 
@@ -185,6 +215,21 @@ void insertionSort(int vetor[])
             vetor[j - 1] = aux;
             j--;
         }
+    }
+}
+
+void insertionSortTarefa(Task *tarefa, int n)
+{
+    int i, j;
+    Task aux;
+    for (i = 0; i < n; i++)
+    {
+        aux = tarefa[i];
+        for (j = i; (j > 0) && (aux.prioridade < tarefa[j - 1].prioridade); j--)
+        {
+            tarefa[j] = tarefa[j - 1];
+        }
+        tarefa[j] = aux;
     }
 }
 
