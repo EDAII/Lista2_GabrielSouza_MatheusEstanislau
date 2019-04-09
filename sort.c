@@ -1,40 +1,150 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define DIM 10
+#define DIM 100
+#define DEZ 10
+#define MIL 1000
+#define DEZ_MIL 10000
 
 void selectionSort(int vetor[], int tamVetor);
 void insertionSort(int vetor[]);
 void bubbleSort(int vetor[]);
 void shellSort(int vetor[]);
 void quick_sort(int *a, int inicio, int fim);
-void popularVetor(int vetor[]);
+void popularVetor(int vetor[], int tamanho);
 void imprimirVetor(int vetor[]);
 void vetorOrdenado(int vetor[]);
-void comparacao(int vetor[]);
+void comparacao(int vetor[], int tamanho);
+int menuPrincipal();
+int menuOrdenacaoIndividual();
+int menuComparativoAlgoritimos();
+int menuTuturial();
+void pause(float delay1);
 
 int main()
 {
-    int vetor[DIM];
-    int tamVetor = sizeof(vetor) / sizeof(int);
+    int vetorDez[DEZ],
+        vetorCem[DIM],
+        vetorMil[MIL],
+        vetorDezMil[DEZ_MIL];
+    //int tamVetor = sizeof(vetor) / sizeof(int);
     size_t inicio, fim;
     double tempo;
+    int menuPri, menuOrdenacao, menuComparativo, menuTuto;
 
-    popularVetor(vetor);
+    //Menu Principal
+    do
+    {
+        menuPri = menuPrincipal();
+        switch (menuPri)
+        {
+        //Ordenação Individual
+        case 1:
+            do
+            {
+                menuOrdenacao = menuOrdenacaoIndividual();
+                switch (menuOrdenacao)
+                {
+                //Insertion Sort
+                case 1:
+                    system("clear");
+                    popularVetor(vetorCem, DIM);
+                    printf("Vetor desordenado:\n");
+                    imprimirVetor(vetorCem);
+                    insertionSort(vetorCem);
+                    printf("Vetor Ordenado: \n");
+                    imprimirVetor(vetorCem);
+                    break;
 
-    // imprimirVetor(vetor);
-    // shellSort(vetor);
-    // imprimirVetor(vetor);
-    //imprimirVetor(vetor);
-    // inicio = time(NULL);
-    // bubbleSort(vetor);
-    // fim = time(NULL);
+                //Selection Sort
+                case 2:
+                    system("clear");
+                    popularVetor(vetorCem, DIM);
+                    printf("Vetor desordenado:\n");
+                    imprimirVetor(vetorCem);
+                    selectionSort(vetorCem, DIM);
+                    printf("Vetor Ordenado: \n");
+                    imprimirVetor(vetorCem);
+                    break;
 
-    // //imprimirVetor(vetor);
-    // tempo = difftime(fim,inicio);
-    // printf("Tempo de Execução: %.2lfs\n", tempo);
+                //Bubble Sort
+                case 3:
+                    system("clear");
+                    popularVetor(vetorCem, DIM);
+                    printf("Vetor desordenado:\n");
+                    imprimirVetor(vetorCem);
+                    bubbleSort(vetorCem);
+                    printf("Vetor Ordenado: \n");
+                    imprimirVetor(vetorCem);
+                    break;
 
-    comparacao(vetor);
+                //Shell Sort
+                case 4:
+                    system("clear");
+                    popularVetor(vetorCem, DIM);
+                    printf("Vetor desordenado:\n");
+                    imprimirVetor(vetorCem);
+                    shellSort(vetorCem);
+                    printf("Vetor Ordenado: \n");
+                    imprimirVetor(vetorCem);
+                    break;
+
+                //Quick Sort
+                case 5:
+                    system("clear");
+                    popularVetor(vetorCem, DIM);
+                    printf("Vetor desordenado:\n");
+                    imprimirVetor(vetorCem);
+                    quick_sort(vetorCem, 0, DIM - 1);
+                    printf("Vetor Ordenado: \n");
+                    imprimirVetor(vetorCem);
+                    break;
+                case 0:
+                    break;
+
+                default:
+                    printf("\aVocê quis dizer: \n");
+                    break;
+                }
+            } while (menuOrdenacao);
+            break;
+        //Comparativo dos Algorítimos
+        case 2:
+            do
+            {
+                menuComparativo = menuComparativoAlgoritimos();
+                switch (menuComparativo)
+                {
+                case 1:
+                    comparacao(vetorDez, DEZ);
+                    break;
+                case 2:
+                    comparacao(vetorMil, MIL);
+                    break;
+                case 3:
+                    comparacao(vetorDezMil, DEZ_MIL);
+                    break;
+                case 0:
+                    break;
+
+                default:
+                    printf("\aVocê quis dizer: \n");
+                    break;
+                }
+
+            } while (menuComparativo);
+
+            break;
+
+        //Quer Saber Mais? "Matheus"
+        case 3:
+
+            break;
+
+        default:
+            break;
+        }
+    } while (menuPri);
 
     return 0;
 }
@@ -158,12 +268,12 @@ void quick_sort(int *a, int inicio, int fim)
     }
 }
 
-void popularVetor(int vetor[])
+void popularVetor(int vetor[], int tamanho)
 {
     srand((unsigned)time(NULL));
-    for (int i = 0; i < DIM; i++)
+    for (int i = 0; i < tamanho; i++)
     {
-        vetor[i] = rand() % DIM;
+        vetor[i] = rand() % tamanho;
     }
 }
 
@@ -185,7 +295,7 @@ void vetorOrdenado(int vetor[])
     }
 }
 
-void comparacao(int vetor[])
+void comparacao(int vetor[], int tamanho)
 {
     int teste, countSelection = 0, countInsertion = 0, countBubble = 0, countShell = 0, countQuick = 0;
     double timeSelection, timeInsertion, timeBubble, timeShell, timeQuick;
@@ -196,35 +306,35 @@ void comparacao(int vetor[])
     for (int i = 0; i < teste; i++)
     {
         //Selection
-        popularVetor(vetor);
+        popularVetor(vetor, tamanho);
         inicio = clock();
         selectionSort(vetor, DIM);
         fim = clock();
         timeSelection = (float)(fim - inicio) / CLOCKS_PER_SEC;
 
         //Insertion
-        popularVetor(vetor);
+        popularVetor(vetor, tamanho);
         inicio = clock();
         insertionSort(vetor);
         fim = clock();
         timeInsertion = (float)(fim - inicio) / CLOCKS_PER_SEC;
 
         //Bubble
-        popularVetor(vetor);
+        popularVetor(vetor, tamanho);
         inicio = clock();
         bubbleSort(vetor);
         fim = clock();
         timeBubble = (float)(fim - inicio) / CLOCKS_PER_SEC;
 
         //Shell
-        popularVetor(vetor);
+        popularVetor(vetor, tamanho);
         inicio = clock();
         shellSort(vetor);
         fim = clock();
         timeShell = (float)(fim - inicio) / CLOCKS_PER_SEC;
 
         //Quick
-        popularVetor(vetor);
+        popularVetor(vetor, tamanho);
         inicio = clock();
         quick_sort(vetor, 0, DIM - 1);
         fim = clock();
@@ -265,4 +375,95 @@ void comparacao(int vetor[])
 
     printf("Pontuação Final\n");
     printf("Selection: %d\t Insertion: %d\t Bubble: %d\t Shell: %d\t Quick: %d\n", countSelection, countInsertion, countBubble, countShell, countQuick);
+}
+
+int menuPrincipal()
+{
+    int opcao;
+
+    system("clear");
+    printf("******************** Menu ******************\n");
+    printf("*1 - Ordenacao Individual                  *\n");
+    printf("*2 - Comparativo dos Algoritimos           *\n");
+    printf("*3 - Quer saber mais?                      *\n");
+    printf("*0 - Sair                                  *\n");
+    printf("********************************************\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opcao);
+
+    return opcao;
+}
+
+// Working
+int menuOrdenacaoIndividual()
+{
+    int opcao;
+
+    printf("*********** Ordenacao Individual ***********\n");
+    printf("*1 - Insertion Sort                        *\n");
+    printf("*2 - Selection Sort                        *\n");
+    printf("*3 - Bubble Sort                           *\n");
+    printf("*4 - Shell Sort                            *\n");
+    printf("*5 - Quick Sort                            *\n");
+    printf("*0 - Voltar                                *\n");
+    printf("********************************************\n");
+
+    printf("Digite sua opcao individual: ");
+    scanf("%d", &opcao);
+
+    return opcao;
+}
+
+int menuComparativoAlgoritimos()
+{
+    int opcao;
+
+    printf("******** Comparativo dos Algoritimos *******\n");
+    printf("*1 - Vetor com 10 elementos                *\n");
+    printf("*2 - Vetor com 1.000 elementos             *\n");
+    printf("*3 - Vetor com 10.000 elementos            *\n");
+    printf("*0 - Voltar                                *\n");
+    printf("********************************************\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opcao);
+
+    return opcao;
+}
+
+int menuTuturial()
+{
+    int opcao;
+
+    printf("***************** Tutorial *****************\n");
+    printf("*1 - Insertion Sort                        *\n");
+    printf("*2 - Selection Sort                        *\n");
+    printf("*3 - Bubble Sort                           *\n");
+    printf("*4 - Shell Sort                            *\n");
+    printf("*5 - Quick Sort                            *\n");
+    printf("*0 - Voltar                                *\n");
+    printf("********************************************\n");
+
+    scanf("%d", &opcao);
+
+    return opcao;
+}
+
+void pause(float delay1)
+{
+
+    if (delay1 < 0.001)
+        return; // pode ser ajustado e/ou evita-se valores negativos.
+
+    float inst1 = 0, inst2 = 0;
+
+    inst1 = (float)clock() / (float)CLOCKS_PER_SEC;
+
+    while (inst2 - inst1 < delay1)
+    {
+        inst2 = (float)clock() / (float)CLOCKS_PER_SEC;
+    }
+
+    return;
 }
